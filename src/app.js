@@ -5,10 +5,10 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const app = express();
-const URL = require('./assets/constants');
+const { connectUrl } = require('./assets/constants');
 
 const PORT = process.env.POST || 9000;
-mongoose.connect(URL, {useNewUrlParser: true})
+mongoose.connect(connectUrl, {useNewUrlParser: true})
     .then(() => {
         console.log('connect database');
         serverRun();
@@ -20,7 +20,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api', routes.auth);
+Object.keys(routes).forEach(name => {
+    app.use('/api', routes[name]);
+});
 
 function serverRun() {
     app.listen(PORT, () => {

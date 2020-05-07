@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 const User = require('../models/Users');
-
+const { jwtKey } = require('../assets/constants');
 const salt = bcrypt.genSaltSync(10);
+
 const registration = async(req, res) => {
     try {
         const { login, password, name, lastName, description } = req.body;
@@ -39,7 +41,16 @@ const login = async(req, res) => {
         if (loginUser) {
             const passwordResult = bcrypt.compareSync(password, loginUser.password);
             if (passwordResult) {
-                res.status(200).send(loginUser);
+                const token = jwt.sign({
+                    login,
+                    password,
+                    id: loginUser._id
+                }, jwtKey, {expiresIn: 60 * 60});
+
+                res.status(200).send({
+                    id: loginUser._id,
+                    token
+                });
             } else {
                 res.status(404).send({
                     message: 'password not valid'
