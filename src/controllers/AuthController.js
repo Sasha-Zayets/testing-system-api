@@ -29,7 +29,10 @@ const registration = async(req, res) => {
                 message: 'a user with such a login exists'
             });
         } else {
-            console.log(error.code);
+            console.log(error);
+            res.status(400).send({
+                message: 'server error'
+            });
         }
     }
 }

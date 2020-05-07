@@ -8,6 +8,8 @@ const app = express();
 const { connectUrl } = require('./assets/constants');
 
 const PORT = process.env.POST || 9000;
+
+mongoose.set('useFindAndModify', false);
 mongoose.connect(connectUrl, {useNewUrlParser: true})
     .then(() => {
         console.log('connect database');
