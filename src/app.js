@@ -7,7 +7,7 @@ const routes = require('./routes');
 const app = express();
 const { connectUrl } = require('./assets/constants');
 
-const PORT = process.env.POST || 9000;
+const PORT = process.env.PORT;
 
 mongoose.set('useFindAndModify', false);
 mongoose.connect(connectUrl, {useNewUrlParser: true})
