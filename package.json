@@ -2,7 +2,7 @@
   "name": "testing-system-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "nodemon src/app.js",
     "start": "node src/app.js"
@@ -17,6 +17,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.12",
+  },
+  "devDependencies": {
     "nodemon": "^2.0.3"
   }
 }
