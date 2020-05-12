@@ -18,6 +18,22 @@ const updateSettins = async (req, res) => {
     }
 }
 
+const getAllSettings = async (req, res) => {
+    try {
+        const { token } = req.body;
+        const { id } = jwt.verify(token, jwtKey);  
+        const result = await User.findById(id);
+
+        res.status(200).send(result);
+    } catch(error) {
+        res.status(400).send({
+            error,
+            message: 'Error loading settings'
+        });
+    }
+}
+
 module.exports = {
-    updateSettins
+    updateSettins,
+    getAllSettings
 }
