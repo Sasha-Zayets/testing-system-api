@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const router = Router();
-const { addTest, allTest, removeTest } = require('../controllers/TestsController');
+const { addTest, allTest, removeTest, getTest } = require('../controllers/TestsController');
 
 router.post('/add-test', addTest);
 router.post('/all-test', allTest);
+router.post('/get-test', getTest);
 router.delete('/remove-test', removeTest);
 
 module.exports = router;
