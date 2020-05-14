@@ -48,7 +48,7 @@ const login = async(req, res) => {
                     login,
                     password,
                     id: loginUser._id
-                }, jwtKey, {expiresIn: 60 * 60});
+                }, jwtKey, { expiresIn: "7d" });
 
                 res.status(200).send({
                     id: loginUser._id,

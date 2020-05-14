@@ -19,4 +19,4 @@ const schema = new Schema({
     }
 });
 
-module.exports = model('questions', schema);
+module.exports = model('all-tests', schema);
