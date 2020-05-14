@@ -50,6 +50,7 @@ const allTest = async(req, res) => {
 const removeTest = async(req, res) => {
     try {
         const { token, idPost } = req.body;
+        console.log(token);
         const user = await hasUser(token);
 
         if(user) {
