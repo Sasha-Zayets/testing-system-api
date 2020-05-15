@@ -1,7 +1,5 @@
-const jwt = require('jsonwebtoken')
-const { jwtKey } = require('../assets/constants');
 const Tests = require('../models/Tests');
-const User = require('../models/Users');
+const ResultTests = require('../models/ResultsTests');
 const hasUser = require('../helpers/hasUser');
 
 const addTest = async(req, res) => {
@@ -36,6 +34,7 @@ const allTest = async(req, res) => {
 
         if(user) {
             const result = await Tests.find({ idUser: user.id});
+
             res.status(200).send(result);
         } else {
             res.status(400).send({
@@ -81,9 +80,56 @@ const getTest = async(req, res) => {
     }
 }
 
+const resultTest = async(req, res) => {
+    try {
+        const { id, name, questions } = req.body;
+        const { questions: questionDateBase } = await Tests.findById(id);
+
+        if(questionDateBase) {
+            let scores = 0;
+            questionDateBase.forEach((item, index) => {
+                const userAnswer = Number(questions[index].rightAnswer);
+                const dataBaseAnswer = Number(item.value);
+
+                if(dataBaseAnswer === userAnswer) {
+                    scores++;
+                }
+            });
+
+            const resultTests = new ResultTests({
+                name_user: name,
+                scores,
+                id_test: id
+            });
+            const result = await resultTests.save();
+
+            res.status(200).send(result);
+        } else {
+            res.status(204).send({
+                message: 'not found test'
+            });
+        }
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+const getTestResults = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await ResultTests.find({ id_test: id });
+        
+        res.status(200).send(result);
+    } catch(error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     addTest,
     allTest,
     removeTest,
-    getTest
+    getTest,
+    resultTest,
+    getTestResults
 }
