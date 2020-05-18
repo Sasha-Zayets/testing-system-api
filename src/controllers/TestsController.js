@@ -83,11 +83,7 @@ const getTest = async(req, res) => {
 const resultTest = async(req, res) => {
     try {
         const { id, name, questions } = req.body;
-        const { 
-            questions: questionDateBase, 
-            name: nameTest,
-            description: descriptionTest 
-        } = await Tests.findById(id);
+        const { questions: questionDateBase } = await Tests.findById(id);
 
         if(questionDateBase) {
             let scores = 0;
@@ -102,8 +98,6 @@ const resultTest = async(req, res) => {
             });
 
             const resultTests = new ResultTests({
-                name: nameTest,
-                description: descriptionTest,
                 name_user: name,
                 scores,
                 id_test: id
@@ -125,8 +119,14 @@ const getTestResults = async(req, res) => {
     try {
         const { id } = req.params;
         const result = await ResultTests.find({ id_test: id });
+        const { name, description } = await Tests.findById(id);
+        const data = {
+            name,
+            description,
+            questions: result
+        }
         
-        res.status(200).send(result);
+        res.status(200).send(data);
     } catch(error) {
         console.log(error);
     }
