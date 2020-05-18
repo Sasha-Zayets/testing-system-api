@@ -83,10 +83,15 @@ const getTest = async(req, res) => {
 const resultTest = async(req, res) => {
     try {
         const { id, name, questions } = req.body;
-        const { questions: questionDateBase } = await Tests.findById(id);
+        const { 
+            questions: questionDateBase, 
+            name: nameTest,
+            description: descriptionTest 
+        } = await Tests.findById(id);
 
         if(questionDateBase) {
             let scores = 0;
+            console.log(questionDateBase)
             questionDateBase.forEach((item, index) => {
                 const userAnswer = Number(questions[index].rightAnswer);
                 const dataBaseAnswer = Number(item.value);
@@ -97,6 +102,8 @@ const resultTest = async(req, res) => {
             });
 
             const resultTests = new ResultTests({
+                name: nameTest,
+                description: descriptionTest,
                 name_user: name,
                 scores,
                 id_test: id
